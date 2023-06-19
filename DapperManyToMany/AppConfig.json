@@ -1,0 +1,5 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=ManyToManyDB;Integrated Security=True;TrustServerCertificate=True;"
+  }
+}
