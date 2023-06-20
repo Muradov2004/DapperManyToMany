@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace DapperManyToMany;
@@ -31,13 +32,17 @@ public partial class MainWindow : Window
                         ON a.Id = ab.AuthorId
                         INNER JOIN Books AS b
                         ON b.Id = ab.BookId";
-            var result = conn.Query<AuthorBook, Author, Book, AuthorBook>(sql,
-                (authorBook, author, book) =>
-                {
-                    authorBook.Books.Add(book);
-                    authorBook.Authors.Add(author);
-                    return authorBook;
-                });
+            //var result = conn.Query<AuthorBook, Author, Book, AuthorBook>(sql,
+            //    (authorBook, author, book) =>
+            //    {
+            //        authorBook.Books.Add(book);
+            //        authorBook.Authors.Add(author);
+            //        return authorBook;
+            //    });
+            var result = conn.Query(sql).Select(row =>new 
+            {
+                Author =Name
+            })
             dataGrid.ItemsSource = result;
         }
     }
