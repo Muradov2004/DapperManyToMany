@@ -34,8 +34,8 @@ public partial class MainWindow : Window
             var result = conn.Query<Author, Book, Author>(sql,
                 (author, book) =>
                 {
-                    author.Books = book;
-                    return product;
+                    author.Books.Add(book);
+                    return author;
                 });
             dataGrid.ItemsSource = result;
         }
