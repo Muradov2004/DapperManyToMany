@@ -7,8 +7,16 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <DataGrid x:Name="dataGrid" ItemsSource="{Binding mydict}" AutoGenerateColumns="False">
-            
-        </DataGrid>
+        <DataGrid x:Name="dataGrid"/>
+        <!--<DataGrid x:Name="dataGrid" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Author Id" Binding="{Binding Id}" />
+                <DataGridTextColumn Header="Author Name" Binding="{Binding AuthorName}" />
+                <DataGridTextColumn Header="Book Name" Binding="{Binding BookName}" />
+                <DataGridTextColumn Header="Book Price" Binding="{Binding Price}" />
+            </DataGrid.Columns>
+        </DataGrid>-->
+
+
     </Grid>
 </Window>
