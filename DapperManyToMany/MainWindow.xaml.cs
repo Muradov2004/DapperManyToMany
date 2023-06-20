@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -24,26 +25,34 @@ public partial class MainWindow : Window
         var config = builder.Build();
         connectionString = config.GetConnectionString("DefaultConnection")!;
 
-        using (var conn = new SqlConnection(connectionString))
+        using (var connection = new SqlConnection(connectionString))
         {
+            //var authors = new List<Author>();
+
             var sql = @"SELECT a.[Id], a.[Name], b.[Name], b.[Price]
-                        FROM AuthorBook AS ab
-                        INNER JOIN Authors AS a
+                        FROM Authors AS a
+                        INNER JOIN AuthorBook AS ab 
                         ON a.Id = ab.AuthorId
                         INNER JOIN Books AS b
                         ON b.Id = ab.BookId";
-            //var result = conn.Query<AuthorBook, Author, Book, AuthorBook>(sql,
-            //    (authorBook, author, book) =>
-            //    {
-            //        authorBook.Books.Add(book);
-            //        authorBook.Authors.Add(author);
-            //        return authorBook;
-            //    });
-            var result = conn.Query(sql).Select(row =>new 
-            {
-                Author =Name
-            })
-            dataGrid.ItemsSource = result;
+            var result = connection.Query<Author, Book, Author>(sql,
+                    (author, book) =>
+                    {
+                        if (!authors.Exists(c => c.Id == author.Id))
+                        {
+                            author.Books.Add(book);
+                            authors.Add(author);
+                        }
+                        else
+                        {
+                            authors
+                            .FirstOrDefault(a => a.Id == author.Id)!
+                            .Books.Add(book);
+                        }
+                        return author;
+                    });
+            dataGrid.ItemsSource = authors;
+
         }
     }
 }
