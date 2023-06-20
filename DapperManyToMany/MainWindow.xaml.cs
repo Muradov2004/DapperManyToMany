@@ -31,11 +31,12 @@ public partial class MainWindow : Window
                         ON a.Id = ab.AuthorId
                         INNER JOIN Books AS b
                         ON b.Id = ab.BookId";
-            var result = conn.Query<Author, Book, Author>(sql,
-                (author, book) =>
+            var result = conn.Query<AuthorBook, Author, Book, AuthorBook>(sql,
+                (authorBook, author, book) =>
                 {
-                    author.Books.Add(book);
-                    return author;
+                    authorBook.Books.Add(book);
+                    authorBook.Authors.Add(author);
+                    return authorBook;
                 });
             dataGrid.ItemsSource = result;
         }

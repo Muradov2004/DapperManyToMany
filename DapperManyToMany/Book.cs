@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DapperManyToMany;
+﻿namespace DapperManyToMany;
 
 internal class Book
 {
